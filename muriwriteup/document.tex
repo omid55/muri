@@ -4,8 +4,8 @@
 \usepackage{amsmath}
 
 %opening
-\title{MURI idea based on multi armed bandits}
-\author{}
+\title{Optimal Task Assignment by Learning Members' Abilities (MURI)}
+\author{Omid Askari}
 
 \begin{document}
 
@@ -16,9 +16,9 @@
 \section{Problem Setup}
 Consider we have a group of people and there is a sequence of tasks. Suppose each person has a set of skills and each task requires some of these tasks to a extent.\newline
 $people = \{p_1, p_2, ..., p_n\}, \;\;\;    
-tasks = \{t_1, t_2, ...\}$
+tasks = \{t_1, t_2, ..., t_T\}$
 
-Each person $p=(s_1, s_2, ..., s_m)$ and task $t=(r_1, r_2 , ..., r_m)$ has $m$ skills set and requirements. We suppose that skill values fall in $[0, b]$ and $b$ is a configuration parameter which directly affects problem's complexity.
+Each person $p=(s_1, s_2, ..., s_m)$ and task $t=(r_1, r_2 , ..., r_m)$ has $m$ skills set and requirements. We suppose that skill values are discrete and fall in $[0, b]$ and $b$ is a configuration parameter which directly affects problem's complexity. The larger $b$ is, bigger the boundary of learning space would be. 
 
 \section{Problem Definition}
 Suppose we know task requirements; however, people's skills are unknown. We need to learn the values of their abilities through payoff function. We also consider that for handling each task, merely one person is needed. The goal is maximizing of the performance in long run.
