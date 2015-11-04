@@ -4,7 +4,7 @@
 \usepackage{amsmath}
 
 %opening
-\title{Optimal Task Assignment by Learning Members' Abilities (MURI)}
+\title{Optimal Task Assignment by Learning Members' Skills (MURI)}
 \author{Omid Askari}
 
 \begin{document}
@@ -21,8 +21,7 @@ tasks = \{t_1, t_2, ..., t_T\}$
 Each person $p=(s_1, s_2, ..., s_m)$ and task $t=(r_1, r_2 , ..., r_m)$ has $m$ skills set and requirements. We suppose that skill values are discrete and fall in $[0, b]$ and $b$ is a configuration parameter which directly affects problem's complexity. The larger $b$ is, bigger the boundary of learning space would be. 
 
 \section{Problem Definition}
-Suppose we know task requirements; however, people's skills are unknown. We need to learn the values of their abilities through payoff function. We also consider that for handling each task, merely one person is needed. The goal is maximizing of the performance in long run.
-Additionally, payoff function $f$ for person $p$ and task $t$ is defined as follows
+Suppose we know task requirements; however, people's skills are unknown. We need to learn the values of people's skills through applying payoff function. We also consider that for handling each task, merely one person is needed. Additionally, payoff function $f$ for person $p$ and task $t$ is defined as follows
 \begin{equation}
 	f(p,t) = 
 	\begin{cases}
@@ -30,6 +29,7 @@ Additionally, payoff function $f$ for person $p$ and task $t$ is defined as foll
 		0,	& otherwise
 	\end{cases}
 \end{equation}
+In fact, the goal is handling more tasks successfully in the long run.
 
 \section{Proposed Method}
 To maximize the performance, we have to learn people's skills. If we know everybody's expertises, we assign best people to their matching task to a great extent
@@ -40,20 +40,33 @@ $s_1 < r_1 \vee s_2 < r_2 \vee ... \vee s_m < r_m$
 
 In this method, we can learn, and hence, limit the boundaries for each person's skills with assigning more tasks to him or her.
 
-One goal in this study could be finding a lower bound of numbers task assignment to a single person with $m$ different skills that vary in $[0, b]$ to ensure that more than 90\% of his or her skill values are uncovered so far.
+\subsection{Rule-based learning example}
+For a simple example, we consider person $p$ with 2 unknown skills, $p=(x, y)$. Then, we assign task $t_1(2, 5)$ which requires known values for each skills as follows,
 
-First we start with no knowledge about people's skills and initialize skill values with 0s. To learn actual values there are two important power which are defined in the following descriptively.
+$p(x,y), t_1(2, 5) => \text{success, }\;\text{therefore :}\; x\geq 2 \wedge y\geq 5$\\
+Then we assign another task,
 
-\subsection{Exploration}
-In exploration phase, we choose one person who is completely unknown and has all 0s in his or her skills. If there is no one left unknown in people, then we will choose that person has the largest boundary distance (who is more unknown). To do this, we define a boundary $[x,y]$ such that $x\geq 0$ and $y\leq b$ for each skill in every person. Boundary distance is defined as
+$p(x,y), t_1(4, 1) => \text{failure, }\;\text{therefore :}\; x\geq 2 \wedge y\geq 5 \wedge (x<4 \vee y<1)$\\
+Thus with a simple logic we can have,
+
+$2\leq x < 4 \wedge y\geq 5$.\\
+Now we have a smaller boundary for $x$ and $y$ and having this knowledge could pave the way for deciding more efficient in task assignment to person $p$.
+
+\subsection{Method Steps}
+One goal in this study could be finding a lower bound for the number of task assignment to a single person with $m$ different skills that vary in $[0, b]$ to ensure that more than 90\% of his or her skill values are uncovered so far. Even if we consider that pay off function is stochastic, this will still be useful to have a tight boundary for each person's skill.
+
+First we start with no knowledge about people's skills and initialize skill values with 0s. To learn actual values there are two important phases in each round. In every round, people either explore or exploit. There is a method to choose one of these phases; however, first we define them descriptively in the following.
+
+\subsubsection{Exploration}
+In exploration, we choose one person who is completely unknown and has all 0s in his or her skills. If there is no one left unknown in people, then we will choose that person has the largest boundary distance (who is more unknown). To do this, we define a boundary $[x,y]$ such that $x\geq 0$ and $y\leq b$ for each skill in every person. Boundary distance is defined as
 \begin{equation}
 	dist = \sqrt{\sum_{i=1}^{m}(x_i-y_i)^2}
 \end{equation}
 
 If there are more than one person having the largest distance, then we choose one of them by random.
 
-\subsection{Exploitation}
-In exploitation phase, we choose one of known people (they have skills values greater than 0) who is more appropriate for the task and his or her skills are more promising for handling successfully. The selection method for task $t=(r_1, r_2, ..., r_m)$ and if each person such as $p=(s_1, s_2, ..., s_m) $ is
+\subsubsection{Exploitation}
+In exploitation, we choose one of known people (they have skills values greater than 0) who has the largest skills for the require ones and it means it is the most promising one for handling the task successfully (however in this method we are somehow wasting resources and there is a more intelligent idea which is presented in the \ref{extension} section). The selection method for task $t=(r_1, r_2, ..., r_m)$ and if each person such as $p=(s_1, s_2, ..., s_m) $ is
 
 \begin{equation}
 	\operatorname{arg\,max}_p o(t,p);\;\;\;
@@ -64,14 +77,15 @@ In exploitation phase, we choose one of known people (they have skills values gr
 	\end{cases}
 \end{equation}
 
-\subsection{Exploration and exploitation trade-off}
-There are different methods in Multi Armed Bandits literature \cite{auer2002finite, kuleshov2014algorithms}; however, for the sake of simplicity and soundness, we will stick with the following method,
+\subsubsection{Exploration and exploitation trade-off}
+One of the most substantial part of this setting should be a policy to manage exploration and exploitation. First, we start with a constant probability such as c (which means $0<c<1$) for exploration $P_{exploration}=c$ and $P_{exploitation}=1-c$ and analyze how this parameter could affect the performance in the long run. To do this, we run the whole setting with different values for c.
+Second, there are various existing methods in Multi Armed Bandits literature \cite{auer2002finite, li2010contextual, kuleshov2014algorithms} to manage between exploration and exploitation; however, for the sake of simplicity, we will apply the following method which is completely logical,
 \begin{equation}
 	P_{exploration} = \frac{\text{c}}{t}
 \end{equation}
 where c is a constant and $t$ is the time-step variable. In the beginning exploration power is very high; however, since $t$ increases over time; as a consequence, the exploitation power gradually increases and exploration decays. This concept is inspired since in the beginning we do not have enough knowledge and is better to explore more; nonetheless, as time passes, we know more and hence it is better to exploit more and refine the available solutions.
 
-\section{Extensions}
+\section{Extensions}\label{extension}
 \begin{enumerate}
 	\item Find a group of people instead of just one person to handle a task.
 	\item We suppose there is a prior knowledge regarding each person; however, this prior probability gradually change through time with a Bayesian learning.
@@ -94,6 +108,17 @@ where c is a constant and $t$ is the time-step variable. In the beginning explor
 	\end{equation}
 	\item We can use some other multi armed bandits algorithms (contextual MAB) and for instance Soft Max to facilitate exploration and exploitation trade-off \cite{li2010contextual, kuleshov2014algorithms}.
 	\item If we consider that tasks are decomposable then we can have a group of people handling a task instead of solely one person. Therefore, to solve this problem, we will use solutions for multiple knapsack problem \cite{chekuri2005polynomial}.
+	\item In exploitation phase, it is more logical choosing whom is the most appropriate for the task and not who has the largest skills since we are somehow wasting resources and we are using the best person for a easy task.
+	\item We also can suppose that people after handling a task, grow some knowledge and experience. Consequently, their skills are gradually increased. For instance after being successful in a task, skill $i$ will be updated as
+	\begin{equation}
+		s_i \leftarrow s_i + \alpha.r_i
+	\end{equation}
+	And if he or she fails then
+	\begin{equation}
+		s_i \leftarrow s_i + \beta.r_i
+	\end{equation}
+	Where $\alpha$ and $\beta$ both are configurable parameters such that $0<\alpha<1$, $0<\beta<1$,  $\alpha>\beta$. Hence, if one task requires one specific skill more than other, person will increase that skill more comparing other ones.
+	
 \end{enumerate}
 
 \bibliographystyle{unsrt}
