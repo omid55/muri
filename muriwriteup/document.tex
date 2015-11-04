@@ -69,13 +69,15 @@ If there are more than one person having the largest distance, then we choose on
 In exploitation, we choose one of known people (they have skills values greater than 0) who has the largest skills for the require ones and it means it is the most promising one for handling the task successfully (however in this method we are somehow wasting resources and there is a more intelligent idea which is presented in the \ref{extension} section). The selection method for task $t=(r_1, r_2, ..., r_m)$ and if each person such as $p=(s_1, s_2, ..., s_m) $ is
 
 \begin{equation}
-	\operatorname{arg\,max}_p o(t,p);\;\;\;
+	\operatorname{arg\,max}_p o(t,p)
+\end{equation}
+\begin{equation*}
 	o(t,p) = 
 	\begin{cases}
 		\sqrt{\sum_{i=1}^{m}(s_i-r_i)^2},	& \text{if\;\;} s_1 \geq r_1 \wedge s_2 \geq r_2 \wedge ... \wedge s_m \geq r_m\\
-		0,	& otherwise
+		-1,	& otherwise
 	\end{cases}
-\end{equation}
+\end{equation*}
 
 \subsubsection{Exploration and exploitation trade-off}
 One of the most substantial part of this setting should be a policy to manage exploration and exploitation. First, we start with a constant probability such as c (which means $0<c<1$) for exploration $P_{exploration}=c$ and $P_{exploitation}=1-c$ and analyze how this parameter could affect the performance in the long run. To do this, we run the whole setting with different values for c.
@@ -108,7 +110,19 @@ where c is a constant and $t$ is the time-step variable. In the beginning explor
 	\end{equation}
 	\item We can use some other multi armed bandits algorithms (contextual MAB) and for instance Soft Max to facilitate exploration and exploitation trade-off \cite{li2010contextual, kuleshov2014algorithms}.
 	\item If we consider that tasks are decomposable then we can have a group of people handling a task instead of solely one person. Therefore, to solve this problem, we will use solutions for multiple knapsack problem \cite{chekuri2005polynomial}.
-	\item In exploitation phase, it is more logical choosing whom is the most appropriate for the task and not who has the largest skills since we are somehow wasting resources and we are using the best person for a easy task.
+	\item In exploitation phase, it is more logical choosing whom is the most appropriate for the task and not who has the largest skills since we are somehow wasting resources and we are using the best person for a easy task. The selection method could be changed as
+	
+	\begin{equation}
+		\operatorname{arg\,min}_p o(t,p)\;st\;o(t,p) > 0
+	\end{equation}
+	\begin{equation*}
+		o(t,p) = 
+		\begin{cases}
+		\sqrt{\sum_{i=1}^{m}(s_i-r_i)^2},	& \text{if\;\;} s_1 \geq r_1 \wedge s_2 \geq r_2 \wedge ... \wedge s_m \geq r_m\\
+		-1,	& otherwise
+		\end{cases}
+	\end{equation*}
+	
 	\item We also can suppose that people after handling a task, grow some knowledge and experience. Consequently, their skills are gradually increased. For instance after being successful in a task, skill $i$ will be updated as
 	\begin{equation}
 		s_i \leftarrow s_i + \alpha.r_i
