@@ -1,0 +1,26 @@
+\begin{thebibliography}{1}
+
+\bibitem{auer2002finite}
+Peter Auer, Nicolo Cesa-Bianchi, and Paul Fischer.
+\newblock Finite-time analysis of the multiarmed bandit problem.
+\newblock {\em Machine learning}, 47(2-3):235--256, 2002.
+
+\bibitem{li2010contextual}
+Lihong Li, Wei Chu, John Langford, and Robert~E Schapire.
+\newblock A contextual-bandit approach to personalized news article
+  recommendation.
+\newblock In {\em Proceedings of the 19th international conference on World
+  wide web}, pages 661--670. ACM, 2010.
+
+\bibitem{kuleshov2014algorithms}
+Volodymyr Kuleshov and Doina Precup.
+\newblock Algorithms for multi-armed bandit problems.
+\newblock {\em arXiv preprint arXiv:1402.6028}, 2014.
+
+\bibitem{chekuri2005polynomial}
+Chandra Chekuri and Sanjeev Khanna.
+\newblock A polynomial time approximation scheme for the multiple knapsack
+  problem.
+\newblock {\em SIAM Journal on Computing}, 35(3):713--728, 2005.
+
+\end{thebibliography}
