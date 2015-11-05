@@ -23,4 +23,9 @@ Chandra Chekuri and Sanjeev Khanna.
   problem.
 \newblock {\em SIAM Journal on Computing}, 35(3):713--728, 2005.
 
+\bibitem{katkovnik2002kernel}
+Vladimir Katkovnik and Ilya Shmulevich.
+\newblock Kernel density estimation with adaptive varying window size.
+\newblock {\em Pattern recognition letters}, 23(14):1641--1648, 2002.
+
 \end{thebibliography}

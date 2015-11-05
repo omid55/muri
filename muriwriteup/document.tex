@@ -111,7 +111,6 @@ where c is a constant and $t$ is the time-step variable. In the beginning explor
 	\item We can use some other multi armed bandits algorithms (contextual MAB) and for instance Soft Max to facilitate exploration and exploitation trade-off \cite{li2010contextual, kuleshov2014algorithms}.
 	\item If we consider that tasks are decomposable then we can have a group of people handling a task instead of solely one person. Therefore, to solve this problem, we will use solutions for multiple knapsack problem \cite{chekuri2005polynomial}.
 	\item In exploitation phase, it is more logical choosing whom is the most appropriate for the task and not who has the largest skills since we are somehow wasting resources and we are using the best person for a easy task. The selection method could be changed as
-	
 	\begin{equation}
 		\operatorname{arg\,min}_p o(t,p)\;st\;o(t,p) > 0
 	\end{equation}
@@ -122,7 +121,6 @@ where c is a constant and $t$ is the time-step variable. In the beginning explor
 		-1,	& otherwise
 		\end{cases}
 	\end{equation*}
-	
 	\item We also can suppose that people after handling a task, grow some knowledge and experience. Consequently, their skills are gradually increased. For instance after being successful in a task, skill $i$ will be updated as
 	\begin{equation}
 		s_i \leftarrow s_i + \alpha.r_i
@@ -132,6 +130,16 @@ where c is a constant and $t$ is the time-step variable. In the beginning explor
 		s_i \leftarrow s_i + \beta.r_i
 	\end{equation}
 	Where $\alpha$ and $\beta$ both are configurable parameters such that $0<\alpha<1$, $0<\beta<1$,  $\alpha>\beta$. Hence, if one task requires one specific skill more than other, person will increase that skill more comparing other ones.
+	\item If we consider that pay off function is much more sophisticated than what we present in real problem, we propose the idea of distribution estimation. In this respect, we suggest use one of the Kernel Density Estimation methods such as Parzen Window \cite{katkovnik2002kernel} to estimate each person's skill values. To do this, we suppose for each successfully handled task, we compute a pdf function with the following method,
+	\begin{equation}
+		P_n(x) = \frac{1}{n}\sum_{i=1}^{n}\frac{1}{h_n}\phi(\frac{x-x_i}{h_n})
+	\end{equation}
+	such that
+	\begin{equation*}
+		h_n = \frac{h_1}{\sqrt{n}},\;
+		\phi(u)\sim \mathcal{N}(0,1)
+	\end{equation*}
+	where $n$ is number of samples and $h_1$ is a parameter that manages variance. Additionally, $\phi$ could be any desired distribution. We can either have another distribution for failed tasks or combine these two distributions together. It is worth mentioning that this approach could be used for individuals or even for teams of people and this method can be a solution for solving group based problem too.
 	
 \end{enumerate}
 

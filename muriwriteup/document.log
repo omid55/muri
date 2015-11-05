@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.10.14)  4 NOV 2015 11:38
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.10.14)  5 NOV 2015 09:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -120,15 +120,15 @@ Overfull \hbox (50.03648pt too wide) detected at line 110
 \OML/cmm/m/it/10 f\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 p; t\OT1/cmr/m/n/10 ) = []
  []
 
-[3] (./document.bbl [4]) [5] (./document.aux) ) 
+[3] [4] (./document.bbl) [5] (./document.aux) ) 
 Here is how much of TeX's memory you used:
- 1064 strings out of 495028
- 12466 string characters out of 6181496
+ 1065 strings out of 495028
+ 12487 string characters out of 6181496
  66404 words of memory out of 5000000
- 4323 multiletter control sequences out of 15000+600000
+ 4324 multiletter control sequences out of 15000+600000
  9669 words of font info for 35 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 27i,9n,20p,496b,223s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 27i,9n,20p,496b,210s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/f
 onts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
@@ -141,7 +141,7 @@ b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr
 exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on document.pdf (5 pages, 155184 bytes).
+Output written on document.pdf (5 pages, 157241 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  48 compressed objects within 1 object stream
