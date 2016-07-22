@@ -1,7 +1,6 @@
 # Omid55
 import numpy as np
 import random as rand
-#from scipy.stats import binom
 import scipy.stats as stat
 import math
 
