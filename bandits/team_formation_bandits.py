@@ -5,6 +5,7 @@ import scipy.stats as stat
 import math
 import itertools as itt
 import collections
+import matplotlib.pyplot as plt
 
 '''Problem class'''
 class Problem:
@@ -32,11 +33,13 @@ class Problem:
         return stat.binom.rvs(1, prob)
 
     def compute_value_of_team(self, team):
-        w = 0
+        w = 0.0
+        c = 0.0
         for i in range(0, len(team)-1):
             for j in range(i+1, len(team)):
                 w += self.weights[team[i]][team[j]]
-        return w
+                c += 1.0
+        return w / c
 
 
 '''Different methods for choosing team'''
@@ -140,23 +143,25 @@ def choose_team_by_thompson_sampling_with_random_variable_for_each_edge(problem,
     for it in range(iterations):
         sampled_params = np.zeros(tn)
         for t, team in enumerate(problem.all_possible_teams):
-            alpha = 0
-            beta = 0
+            alpha = 1
+            beta = 1
             for i in range(0,len(team)-1):
                 for j in range(i+1, len(team)):
                     alpha += S[str(team[i])+','+str(team[j])]
                     beta += F[str(team[i])+','+str(team[j])]
-            alpha += 1
-            beta += 1
             sampled_params[t] = stat.beta.rvs(alpha, beta)
         team = problem.all_possible_teams[np.argmax(sampled_params)]
         reward = problem.pull_arm(team)
         for i in range(0,len(team)-1):
             for j in range(i+1, len(team)):
+                #nn = 2.0 / (len(team) * (len(team)-1))
+                nn = 1
                 if reward == 1:
-                    S[str(team[i])+','+str(team[j])] += 1
+                    S[str(team[i]) + ',' + str(team[j])] += nn
+                    S[str(team[j]) + ',' + str(team[i])] += nn
                 else:
-                    F[str(team[i])+','+str(team[j])] += 1
+                    F[str(team[i]) + ',' + str(team[j])] += nn
+                    F[str(team[j]) + ',' + str(team[i])] += nn
         yield team, reward
 
 
@@ -165,27 +170,38 @@ def choose_team_by_thompson_sampling_with_random_variable_for_each_edge(problem,
 def main():
 
     # params
-    number_of_people = 5
-    team_size = 3
+    number_of_people = 8
+    team_size = 4
     iterations = 1000
 
     probl = Problem(number_of_people, team_size)
-    probl.set_weights([[0,0.75,0.06,0.3,0.5], [0.75,0,0.88,0.46,0.95], [0.06,0.88,0,0.7,0.9], [0.3,0.46,0.7,0,0.02], [0.5,0.95,0.9,0.02,0]])  # comment it out to see diverse problems << CHECK HERE >>
+    #probl.set_weights([[0,0.75,0.06,0.3,0.5], [0.75,0,0.88,0.46,0.95], [0.06,0.88,0,0.7,0.9], [0.3,0.46,0.7,0,0.02], [0.5,0.95,0.9,0.02,0]])  # comment it out to see diverse problems << CHECK HERE >>
     print probl.weights, '\n\n'
 
+    points = 20
+    po = np.arange(iterations / points, iterations + iterations / points, iterations / points)
     methods = [choose_optimal_team, choose_team_by_random, choose_team_by_explore_few_then_exploit, choose_team_by_ucb, choose_team_by_thompson_sampling, choose_team_by_thompson_sampling_with_random_variable_for_each_edge]
     for method in methods:
         rewards_mean = 0
         rewards_pow2_mean = 0
-        c = 0
+        success = np.zeros(points)
+        cnt = 0.0
+        win = 0.0
         for team, reward in method(probl, iterations):
-            rewards_mean = float(rewards_mean * c + reward) / (c+1)
-            rewards_pow2_mean = float(rewards_pow2_mean * c + reward*reward) / (c+1)
-            c += 1
+            rewards_mean = float(rewards_mean * cnt + reward) / (cnt + 1)
+            rewards_pow2_mean = float(rewards_pow2_mean * cnt + reward*reward) / (cnt + 1)
+            if reward:
+                win += 1.0
+            cnt += 1.0
+            if not cnt % (iterations/points):
+                success[(cnt / (iterations/points))-1] = win / cnt
 
+        plt.plot(po, success)
         stand_err_r = round(math.sqrt(rewards_pow2_mean - rewards_mean*rewards_mean)/math.sqrt(iterations),2)
         print method.__name__, ':\t', rewards_mean, '\t+/-\t', stand_err_r
 
+    plt.legend(['optimal', 'random', 'explore then exploit', 'UCB', 'Thompson', 'Thompson for each'], loc='best')
+    plt.show()
 
 if __name__ == "__main__":
     main()
