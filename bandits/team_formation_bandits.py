@@ -56,7 +56,7 @@ def choose_optimal_team(problem, iterations):
                     max_v = v
             print 'The optimal team is => ', problem.optimal_team, '\n'
         reward = problem.pull_arm(problem.optimal_team)
-        yield team, reward
+        yield problem.optimal_team, reward
 
 # methods
 def choose_team_by_random(problem, iterations):
@@ -85,7 +85,7 @@ def choose_team_by_explore_few_then_exploit(problem, iterations):  # Maximum Lik
                 teams = list(set(S.keys()+F.keys()))
             prob = [S[a]/(S[a]+F[a]) for a in teams]
             team_str = teams[np.argmax(prob)]
-            team = map(int, team_str.split(','))
+            team = list(map(int, team_str.split(',')))
             reward = problem.pull_arm(team)
             if reward == 1:
                 S[team_str] += 1
@@ -214,23 +214,24 @@ def choose_team_by_thompson_sampling_with_random_variable_for_each_edge(problem,
         yield team, reward
 
 
-
 '''Main function'''
 def main():
 
     # params
-    number_of_people = 4
-    team_size = 3
+    number_of_people = 10
+    team_size = 4
     iterations = 1000
 
     probl = Problem(number_of_people, team_size)
     #probl.set_weights([[0,0.75,0.06,0.3,0.5], [0.75,0,0.88,0.46,0.95], [0.06,0.88,0,0.7,0.9], [0.3,0.46,0.7,0,0.02], [0.5,0.95,0.9,0.02,0]])  # comment it out to see diverse problems << CHECK HERE >>
-    probl.set_weights([[0, 0.1, 0.9, 0.2], [0.1, 0, 0.2, 0.3], [0.9, 0.2, 0, 0.3],[0.2, 0.3, 0.3, 0]])
+    #probl.set_weights([[0, 0.1, 0.9, 0.2], [0.1, 0, 0.2, 0.3], [0.9, 0.2, 0, 0.3],[0.2, 0.3, 0.3, 0]])
     print probl.weights, '\n\n'
 
     points = 20
     po = np.arange(iterations / points, iterations + iterations / points, iterations / points)
-    methods = [choose_optimal_team, choose_team_by_random, choose_team_by_explore_few_then_exploit, choose_team_by_ucb, choose_team_by_thompson_sampling, choose_team_by_ucb_with_random_variable_for_each_edge, choose_team_by_thompson_sampling_with_random_variable_for_each_edge]
+    methods = [choose_optimal_team, choose_team_by_random, choose_team_by_explore_few_then_exploit, choose_team_by_ucb,
+               choose_team_by_thompson_sampling, choose_team_by_ucb_with_random_variable_for_each_edge,
+               choose_team_by_thompson_sampling_with_random_variable_for_each_edge]
     for method in methods:
         start = time.time()
         rewards_mean = 0
@@ -248,8 +249,8 @@ def main():
                 success[(cnt / (iterations/points))-1] = win / cnt
 
         plt.plot(po, success)
-        stand_err_r = round(math.sqrt(rewards_pow2_mean - rewards_mean*rewards_mean)/math.sqrt(iterations),2)
-        print method.__name__, ':\t', rewards_mean, '\t+/-\t', stand_err_r, '\t: in ', round(time.time() - start,2), ' seconds.'
+        rewards_std = round(math.sqrt(rewards_pow2_mean - rewards_mean*rewards_mean)/math.sqrt(iterations),2)
+        print method.__name__, '=>\tlast team: ', team, '=', probl.compute_value_of_team(team), ',\trewards: ', rewards_mean, '+/-', rewards_std, ', in ', round(time.time() - start,2), ' seconds.'
 
     plt.xlabel('# Iteration')
     plt.ylabel('Success ratio until this iteration')
