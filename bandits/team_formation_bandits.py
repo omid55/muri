@@ -96,7 +96,7 @@ def choose_team_by_explore_few_then_exploit(problem, iterations):  # Maximum Lik
 
 def choose_team_by_ucb(problem, iterations):
     tn = len(problem.all_possible_teams)
-    assert iterations>tn, 'Number of iterations should be larger than number of teams.'
+    assert iterations>tn, 'Number of iterations should be larger than number of teams.' + ' In fact, #iterations:' + str(iterations) + ' and #teams:' + str(tn)
     S = collections.defaultdict(lambda: 0)
     F = collections.defaultdict(lambda: 0)
     for team in problem.all_possible_teams:
@@ -140,7 +140,7 @@ def choose_team_by_thompson_sampling(problem, iterations):
 
 def choose_team_by_ucb_with_random_variable_for_each_edge(problem, iterations):
     tn = len(problem.all_possible_teams)
-    assert iterations>tn, 'Number of iterations should be larger than number of teams.'
+    assert iterations>tn, 'Number of iterations should be larger than number of teams.' + ' In fact, #iterations:' + str(iterations) + ' and #teams:' + str(tn)
     S = collections.defaultdict(lambda: 0)
     F = collections.defaultdict(lambda: 0)
     # nn = 2.0 / (len(team) * (len(team)-1))
@@ -266,7 +266,7 @@ def choose_team_by_thompson_sampling_with_keep_track_of_edge_and_team(problem, i
 '''Main function'''
 def main():
 
-    auto = 0
+    auto = 1
     figure_points = 20
 
     if auto:
