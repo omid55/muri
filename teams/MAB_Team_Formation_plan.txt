@@ -1,0 +1,21 @@
+Team formation with multi armed bandits
+---------------------------
+
+Problem's sketch:
+	We have n people and a set of m tasks. For every task we want to make a team of k people that with the highest probability will be succeed in the task.
+
+
+Problems:
+
+	1. Skill based task assignments=> Each person has a probability of success if being part of the team of k people solving one type of known task. This mean every person has a number between [0,1] (thus we have in fact a vector of n numbers falling in [0,1]) which is unkown for the algorithm. Oracle who knows all these information find the best team: (in tex format)
+			\operatorname{arg\,max}_{team_j \in \forall teams} (1/k)*\sum_{i \in team_j}{P_i}
+	
+	2. Skill based task assignments=> Each person has a vector of binary skills (0 and 1 for every dimension in skill vector) and a task is also a binary vector. Every task is solvable by a team iff their OR and with task is task itself. For instance, p1=(1,0,0,1), p2=(1,1,0,0) and task1=(1,1,0,1) which is solvable by these two people. (p1 or p2) and task1 == task1.
+
+	3. Cooperation based task assignments=> Each edge has a probability of success if being part of the team of k people solving one type of the known task. This means two people has a cooperation edge value between [0,1]. Best team by Oracle will be the largest subgraph of entire network with k team members.
+
+	4. Both skill and cooperation based task assignments=> 
+
+	5. Dynamic skill and cooperation values task assignments=> 
+
+	
